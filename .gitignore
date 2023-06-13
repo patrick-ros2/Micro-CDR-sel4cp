@@ -3,3 +3,5 @@ examples/performance_cmp_versions
 .vscode
 .color_coded
 .ycm_extra_conf.py
+.idea
+cmake-build*
