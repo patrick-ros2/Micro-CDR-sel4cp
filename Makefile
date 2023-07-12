@@ -7,7 +7,7 @@ BUILD_DIR = build
 # ==================================
 
 NUM_PROCS = 4
-REMOTE_USER_HOST = "patrick@vm_comp4961_ubuntu2204"
+REMOTE_USER_HOST = "patrick@vm_comp4961_ubuntu1804"
 REMOTE_DEST_DIR = "~/remote/$(shell hostname -s)/"
 
 .PHONY: push-remote
@@ -43,6 +43,9 @@ remote: push-remote
 .PHONY: clean
 clean:
 	rm -rf $(BUILD_DIR)
+	sudo rm -rf /usr/local/microcdr-2.0.1/include/ucdr
+	sudo rm -rf /usr/local/microcdr-2.0.1/share/microcdr
+	sudo rm -rf /usr/local/microcdr-2.0.1/lib/libmicrocdr.a
 
 # ==================================
 # Build
