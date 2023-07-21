@@ -1,6 +1,7 @@
 SHELL = /bin/zsh
 PWD_DIR = "$(shell basename $$(pwd))"
 BUILD_DIR = build
+INSTALL_DIR = ~/ros2
 
 # ==================================
 # Pushes the current directory to remote host.
@@ -43,9 +44,10 @@ remote: push-remote
 .PHONY: clean
 clean:
 	rm -rf $(BUILD_DIR)
-	sudo rm -rf /usr/local/microcdr-2.0.1/include/ucdr
-	sudo rm -rf /usr/local/microcdr-2.0.1/share/microcdr
-	sudo rm -rf /usr/local/microcdr-2.0.1/lib/libmicrocdr.a
+	rm -rf $(INSTALL_DIR)/microcdr-2.0.1/include/ucdr
+	rm -rf $(INSTALL_DIR)/microcdr-2.0.1/share/microcdr
+	rm -rf $(INSTALL_DIR)/microcdr-2.0.1/lib/libmicrocdr.a
+	rm -rf $(INSTALL_DIR)/microcdr-2.0.1
 
 # ==================================
 # Build
@@ -56,7 +58,9 @@ build:
 	CC=aarch64-none-elf-gcc CXX=aarch64-none-elf-g++ \
 		cmake -S . -B $(BUILD_DIR) \
 			-DCMAKE_C_COMPILER_WORKS=1 \
-			-DCMAKE_CXX_COMPILER_WORKS=1
+			-DCMAKE_CXX_COMPILER_WORKS=1 \
+			-DCMAKE_INSTALL_PREFIX=$(INSTALL_DIR) \
+			-DCMAKE_MODULE_PATH=./
 	cd $(BUILD_DIR) && $(MAKE) -j $(NUM_PROCS)
 	# Install so that we can use the library in other projects.
-	cd $(BUILD_DIR) && sudo $(MAKE) install
+	cd $(BUILD_DIR) && $(MAKE) install
